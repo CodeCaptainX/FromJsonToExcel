@@ -6,12 +6,31 @@
   "scripts": {
     "devToWeb": "vite",
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
-    "build": "vite build && tsc -p tsconfig.electron.json && electron-builder",
+    "clean": "rimraf dist  release",
+    "build": "npm run clean && vite build && tsc -p tsconfig.electron.json && electron-builder",
     "electron:dev": "electron .",
     "start": "npm run dev"
   },
+  "build": {
+    "files": [
+      "dist",
+      "dist-electron",
+      "electron",
+      "preload.js"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "extraResources": [],
+    "appId": "com.example.myapp",
+    "productName": "MyElectronApp",
+    "win": { "target": "nsis" },
+    "mac": { "target": "dmg" },
+    "linux": { "target": "AppImage" }
+  },
   "dependencies": {
     "electron-is-dev": "^3.0.1",
+    "electron-updater": "^6.6.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -34,4 +53,5 @@
     "wait-on": "^8.0.3"
   },
   "main": "dist-electron/main.cjs"
+  
 }
